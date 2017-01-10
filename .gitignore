@@ -1,0 +1,10 @@
+.directory
+doc/html/
+doc/man/
+example/.directory
+example/test/e1
+example/test/.obj/
+example/lambda/e2
+example/lambda/.obj/
+example/objects/e3
+example/objects/.obj/
