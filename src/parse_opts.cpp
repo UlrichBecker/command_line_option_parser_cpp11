@@ -475,7 +475,7 @@ void PARSER::list( ostream& out )
 */
 void PARSER::sortShort( bool down )
 {
-   sort( m_optPtrList.begin(), m_optPtrList.end(),
+   sort( begin(), end(),
          [down]( OPTION* a, OPTION* b ) -> bool
          {
             return down != (a->m_shortOpt < b->m_shortOpt);
@@ -487,7 +487,7 @@ void PARSER::sortShort( bool down )
 */
 void PARSER::sortLong( bool down )
 {
-   sort( m_optPtrList.begin(), m_optPtrList.end(),
+   sort( begin(), end(),
          [down]( OPTION* a, OPTION* b ) -> bool
          {
             return down != (a->m_longOpt.compare( b->m_longOpt ) < 0);

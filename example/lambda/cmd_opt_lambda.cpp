@@ -117,7 +117,6 @@ int main( int argc, char** ppArgv )
       {
          OPT_LAMBDA( poMyParser,
          {
-            //assert( dynamic_cast<MY_PARSER*>(parser) != NULL );
             assert( !poMyParser->isOptArgPersent() );
             static_cast<MY_PARSER*>(poMyParser)->setFlag( 0 );
             return 0;
