@@ -84,7 +84,7 @@ public:
       m_helpText = "Test for virtual callback function.";
    }
    virtual ~MY_OPTION_V( void ) {}
-   virtual int onGiven( PARSER* poParser )
+   int onGiven( PARSER* poParser ) override
    {
       cout << "Virtual function" << endl;
       return 0;

@@ -100,7 +100,7 @@ public:
 private:
    // Function becomes immediately triggered if the parser recognized
    // the option "-h" or "--help" in the commend-line.
-   virtual int onGiven( PARSER* poParser )
+   int onGiven( PARSER* poParser ) override
    {
       cout << "Usage: " << poParser->getProgramName() << " [options,...]\n";
       poParser->list( cout );
@@ -120,7 +120,7 @@ public:
 
    // The overwriting of the following callback-function makes it enable
    // to evaluate non-option arguments too.
-   virtual int onArgument( void )
+   int onArgument( void ) override
    {
       cout << "Non option argument on index " << getArgIndex() << ": "
            << getArgVect()[getArgIndex()] << endl;

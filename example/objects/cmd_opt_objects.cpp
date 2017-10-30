@@ -36,7 +36,7 @@ public:
    bool get( void ) const { return m_flag; }
 
 private:
-   virtual int onGiven( PARSER* poParser )
+   int onGiven( PARSER* poParser ) override
    {
       assert( !poParser->isOptArgPersent() );
       m_flag = true;
@@ -57,7 +57,7 @@ public:
    }
 
 private:
-   virtual int onGiven( PARSER* poParser )
+   int onGiven( PARSER* poParser ) override
    {
       assert( !poParser->isOptArgPersent() );
       cout << "Usage: " << poParser->getProgramName() << " [options,...]\n";
@@ -86,7 +86,7 @@ public:
    string& get( void ) { return m_sOptional; }
 
 private:
-   virtual int onGiven( PARSER* poParser )
+   int onGiven( PARSER* poParser ) override
    {
       if( poParser->isOptArgPersent() )
          m_sOptional = poParser->getOptArg();
@@ -161,7 +161,7 @@ public:
 
    // The overwriting of the following callback-function makes it enable
    // to evaluate non-option arguments too.
-   virtual int onArgument( void )
+   int onArgument( void ) override
    {
       cout << "Non option argument on index " << getArgIndex() << ": "
            << getArgVect()[getArgIndex()] << endl;
