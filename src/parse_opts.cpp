@@ -94,7 +94,7 @@ OPTION_V::OPTION_V( void )
 PARSER::PARSER( int argc, char** ppArgv, bool allowNegativeDigits ):
    m_ppArgv( ppArgv ),
    m_argc( argc ),
-   m_pCurrentOption( NULL ),
+   m_pCurrentOption( nullptr ),
    m_allowNegativeDigits( allowNegativeDigits )
 {
 }
@@ -105,7 +105,7 @@ PARSER::PARSER( int argc, char** ppArgv, bool allowNegativeDigits ):
 int PARSER::parse( int offset )
 {
    int ret = _parse( offset );
-   m_pCurrentOption = NULL;
+   m_pCurrentOption = nullptr;
    return ret;
 }
 
@@ -164,10 +164,10 @@ int PARSER::_parse( int offset )
          while( (pCurrent[tl] != '\0') && (pCurrent[tl] != '=') )
             tl++;
 
-         m_pCurrentOption = NULL;
+         m_pCurrentOption = nullptr;
          for( auto it = begin(); it != end(); it++ )
          {
-            assert( (*it)->m_func != NULL );
+            assert( (*it)->m_func != nullptr );
             if( (*it)->m_longOpt.empty() )
             {  // In this case at least OPTION::m_shortOpt must be defined!
                assert( (*it)->m_shortOpt != '\0' );
@@ -177,12 +177,12 @@ int PARSER::_parse( int offset )
                continue;
             if( (*it)->m_longOpt.compare( 0, tl, pCurrent, tl ) == 0 )
             {
-               assert( m_pCurrentOption == NULL );
+               assert( m_pCurrentOption == nullptr );
                m_pCurrentOption = *it;
                break;
             }
          }
-         if( m_pCurrentOption == NULL )
+         if( m_pCurrentOption == nullptr )
          {
             if( onErrorUnrecognizedLongOption( pCurrent ) < 0 )
                return -1;
@@ -305,10 +305,10 @@ int PARSER::_parse( int offset )
 
       while( *pCurrent != '\0' ) // short option
       {
-         m_pCurrentOption = NULL;
+         m_pCurrentOption = nullptr;
          for( auto it = begin(); it != end(); it++ )
          {
-            assert( (*it)->m_func != NULL );
+            assert( (*it)->m_func != nullptr );
             if( (*it)->m_shortOpt == '\0' )
             {  // In this case at least OPTION::m_longOpt must be defined!
                assert( !(*it)->m_longOpt.empty() );
@@ -316,12 +316,12 @@ int PARSER::_parse( int offset )
             }
             if( (*it)->m_shortOpt == *pCurrent )
             {
-               assert( m_pCurrentOption == NULL );
+               assert( m_pCurrentOption == nullptr );
                m_pCurrentOption = *it;
                break;
             }
          }
-         if( m_pCurrentOption == NULL )
+         if( m_pCurrentOption == nullptr )
          {
             if( onErrorUnrecognizedShortOption( *pCurrent ) < 0 )
                return -1;
@@ -559,7 +559,7 @@ int PARSER::onErrorlongOptionalArg( void )
  */
 int PARSER::onErrorShortOptionalArg( void )
 {
-   assert( dynamic_cast<OPTION*>(m_pCurrentOption) != NULL );
+   assert( dynamic_cast<OPTION*>(m_pCurrentOption) != nullptr );
    cerr << getProgramName()
         << ": missing argument after '=' of short option -"
         << getCurrentOption()->m_shortOpt

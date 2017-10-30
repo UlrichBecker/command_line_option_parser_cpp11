@@ -254,7 +254,7 @@ public:
                      "Option type is not a class!" );
       static_assert( std::is_base_of<OPTION, O_T>::value,
                      "Option type has not the base CLOP::OPTION" );
-      assert( dynamic_cast<OPTION*>(&rOptionObj) != NULL );
+      assert( dynamic_cast<OPTION*>(&rOptionObj) != nullptr );
       m_optPtrList.push_back( &rOptionObj );
       return *this;
    }
@@ -322,7 +322,7 @@ public:
            bool allowNegativeDigits = false ):
       m_ppArgv( ppArgv ),
       m_argc( argc ),
-      m_pCurrentOption( NULL ),
+      m_pCurrentOption( nullptr ),
       m_allowNegativeDigits( allowNegativeDigits )
    {
       static_assert( std::is_class<OL_T>::value,
@@ -443,7 +443,7 @@ public:
    //!       Otherwise a assertion will occur!
    bool isOptArgPersent( void ) const
    {
-      assert( m_pCurrentOption != NULL );
+      assert( m_pCurrentOption != nullptr );
       return !m_optArg.empty();
    }
 
@@ -455,7 +455,7 @@ public:
    //!       Otherwise a assertion will occur!
    std::string& getOptArg( void )
    {
-      assert( m_pCurrentOption != NULL );
+      assert( m_pCurrentOption != nullptr );
       return m_optArg;
    }
 
@@ -470,7 +470,7 @@ public:
    //!       Otherwise a assertion will occur!
    OPTION* getCurrentOption( void ) const 
    {
-      assert( m_pCurrentOption != NULL );
+      assert( m_pCurrentOption != nullptr );
       return m_pCurrentOption;
    }
 
@@ -620,32 +620,32 @@ protected:
    //! @brief Becomes triggered if a error in a long optional argument after '='
    //!        occurs.
    //! @see CLOP::OPTION::OPTIONAL_ARG
-   //! @retval <0 Parser returns immediately by this value. (default)
+   //! @retval <0 Parser returns immediately by this negative value. (default)
    //! @retval ==0 Parser continues its work.
-   //! @retval >= Parser continues its work but returns by -1.
+   //! @retval >0 Parser continues its work but returns by -1.
    virtual int onErrorlongOptionalArg( void );
 
    //! @brief Becomes triggered if a error in a short optional argument after '='
    //!        occurs.
    //! @see CLOP::OPTION::OPTIONAL_ARG
-   //! @retval <0 Parser returns immediately by this value. (default)
+   //! @retval <0 Parser returns immediately by this negative value. (default)
    //! @retval ==0 Parser continues its work.
-   //! @retval >= Parser continues its work but returns by -1.
+   //! @retval >0 Parser continues its work but returns by -1.
    virtual int onErrorShortOptionalArg( void );
 
    //! @brief Becomes triggered if a required argument of a short option
    //!        is missing.
    //! @see CLOP::OPTION::REQUIRED_ARG
-   //! @retval <0 Parser returns immediately by this value. (default)
+   //! @retval <0 Parser returns immediately by this negative value. (default)
    //! @retval ==0 Parser continues its work.
-   //! @retval >= Parser continues its work but returns by -1.
+   //! @retval >0 Parser continues its work but returns by -1.
    virtual int onErrorShortMissingRequiredArg( void );
 
    //! @brief Becomes triggered if a required argument of a long option
    //!        is missing.
-   //! @retval <0 Parser returns immediately by this value. (default)
+   //! @retval <0 Parser returns immediately by this negative value. (default)
    //! @retval ==0 Parser continues its work.
-   //! @retval >= Parser continues its work but returns by -1.
+   //! @retval >0 Parser continues its work but returns by -1.
    virtual int onErrorLongMissingRequiredArg( void );
 
    //! @} End of defgroup OPT_ERROR
