@@ -280,8 +280,8 @@ public:
                      "Option type is not a class!" );
       static_assert( std::is_base_of<OPTION, OL_T>::value,
                      "Option type has not the base CLOP::OPTION" );
-      for( auto it = rOptList.begin(); it != rOptList.end(); it++ )
-         add( *it );
+      for( auto& it : rOptList )
+         add( it );
       return *this; 
    }
 
