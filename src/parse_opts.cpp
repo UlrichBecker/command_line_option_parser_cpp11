@@ -112,6 +112,15 @@ int PARSER::parse( int offset )
 /*!----------------------------------------------------------------------------
 @see parse_opts.hpp
 */
+
+#define _RETURN_HANDLING( f ) \
+   ret = (f);                 \
+   if( ret < 0 )              \
+      return ret;             \
+   if( ret > 0 )              \
+      error = true;           \
+
+
 int PARSER::_parse( int offset )
 {
    assert( offset >= 1 );
@@ -165,20 +174,20 @@ int PARSER::_parse( int offset )
             tl++;
 
          m_pCurrentOption = nullptr;
-         for( auto it = begin(); it != end(); it++ )
+         for( auto& it : *this )
          {
-            assert( (*it)->m_func != nullptr );
-            if( (*it)->m_longOpt.empty() )
+            assert( it->m_func != nullptr );
+            if( it->m_longOpt.empty() )
             {  // In this case at least OPTION::m_shortOpt must be defined!
-               assert( (*it)->m_shortOpt != '\0' );
+               assert( it->m_shortOpt != '\0' );
                continue;
             }
-            if( tl != (*it)->m_longOpt.length() )
+            if( tl != it->m_longOpt.length() )
                continue;
-            if( (*it)->m_longOpt.compare( 0, tl, pCurrent, tl ) == 0 )
+            if( it->m_longOpt.compare( 0, tl, pCurrent, tl ) == 0 )
             {
                assert( m_pCurrentOption == nullptr );
-               m_pCurrentOption = *it;
+               m_pCurrentOption = it;
                break;
             }
          }
@@ -195,11 +204,7 @@ int PARSER::_parse( int offset )
             case OPTION::NO_ARG:
             {
                m_optArg.clear();
-               ret = m_pCurrentOption->m_func( this );
-               if( ret< 0 )
-                  return ret;
-               if( ret > 0 )
-                  error = true;
+               _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                break;
             }
             case OPTION::REQUIRED_ARG:
@@ -229,11 +234,7 @@ int PARSER::_parse( int offset )
                   if( ((m_index+1) == m_argc) || (m_ppArgv[m_index+1][0] != '=') )
                   { // No argument
                      m_optArg.clear();
-                     ret = m_pCurrentOption->m_func( this );
-                     if( ret < 0 )
-                        return ret;
-                     if( ret > 0 )
-                        error = true;
+                     _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                      break;
                   }
                   if( m_ppArgv[m_index+1][0] == '=' )
@@ -242,60 +243,36 @@ int PARSER::_parse( int offset )
                      if( m_ppArgv[m_index][1] != '\0' )
                      { // "--OPTION =ARGUMENT"
                         m_optArg = &m_ppArgv[m_index][1];
-                        ret = m_pCurrentOption->m_func( this );
-                        if( ret < 0 )
-                           return ret;
-                        if( ret > 0 )
-                           error = true;
+                        _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                         break;
                      }
                      if( (m_index+1) == m_argc )
                      {
-                        ret = onErrorlongOptionalArg();
-                        if( ret < 0 )
-                           return ret;
-                        if( ret > 0 )
-                           error = true;
+                        _RETURN_HANDLING( onErrorlongOptionalArg() )
                         break;
                      }
                      // "--OPTION = ARGUMENT"
                      m_index++;
                      m_optArg = m_ppArgv[m_index];
-                     ret = m_pCurrentOption->m_func( this );
-                     if( ret < 0 )
-                        return ret;
-                     if( ret > 0 )
-                        error = true;
+                     _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                   }
                   break;
                } // if( pCurrent[tl] == '\0' )
                if( pCurrent[tl+1] != '\0' )
                { // "--OPTION=ARGUMENT"
                   m_optArg = &pCurrent[tl+1];
-                  ret = m_pCurrentOption->m_func( this );
-                  if( ret < 0 )
-                     return ret;
-                  if( ret > 0 )
-                     error = true;
+                  _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                   break;
                }
                if( (m_index+1) == m_argc )
                {
-                  ret = onErrorlongOptionalArg();
-                  if( ret < 0 )
-                     return ret;
-                  if( ret > 0 )
-                     error = true;
+                  _RETURN_HANDLING( onErrorlongOptionalArg() )
                   break;
                }
                // "--OPTION= ARGUMENT"
                m_index++;
                m_optArg = m_ppArgv[m_index];
-               ret = m_pCurrentOption->m_func( this );
-               if( ret < 0 )
-                  return ret;
-               if( ret > 0 )
-                  error = true;
+               _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                break;
             } // End of case OPTIONAL_ARG:
             default: assert( false ); break;
@@ -306,18 +283,18 @@ int PARSER::_parse( int offset )
       while( *pCurrent != '\0' ) // short option
       {
          m_pCurrentOption = nullptr;
-         for( auto it = begin(); it != end(); it++ )
+         for( auto& it : *this )
          {
-            assert( (*it)->m_func != nullptr );
-            if( (*it)->m_shortOpt == '\0' )
+            assert( it->m_func != nullptr );
+            if( it->m_shortOpt == '\0' )
             {  // In this case at least OPTION::m_longOpt must be defined!
-               assert( !(*it)->m_longOpt.empty() );
+               assert( !it->m_longOpt.empty() );
                continue;
             }
-            if( (*it)->m_shortOpt == *pCurrent )
+            if( it->m_shortOpt == *pCurrent )
             {
                assert( m_pCurrentOption == nullptr );
-               m_pCurrentOption = *it;
+               m_pCurrentOption = it;
                break;
             }
          }
@@ -335,33 +312,20 @@ int PARSER::_parse( int offset )
             case OPTION::NO_ARG:
             {
                m_optArg.clear();
-               ret = m_pCurrentOption->m_func( this );
-               if( ret < 0 )
-                  return ret;
-               if( ret > 0 )
-                  error = true;
+               _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                break;
             }
             case OPTION::REQUIRED_ARG:
             {
                if( (pCurrent[1] == '\0') && ((m_index+1) == m_argc) )
                {
-                  ret = onErrorShortMissingRequiredArg();
-                  if( ret < 0 )
-                     return ret;
-                  if( ret > 0 )
-                     error = true;
+                  _RETURN_HANDLING( onErrorShortMissingRequiredArg() )
                   break;
                }
                if( pCurrent[1] != '\0' )
                {
                   m_optArg = &pCurrent[1];
-                  ret = m_pCurrentOption->m_func( this );
-                  if( ret < 0 )
-                     return ret;
-                  if( ret > 0 )
-                     error = true;
-
+                  _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                   do
                      pCurrent++;
                   while( pCurrent[1] != '\0' );
@@ -370,11 +334,7 @@ int PARSER::_parse( int offset )
                {
                   m_index++;
                   m_optArg = m_ppArgv[m_index];
-                  ret = m_pCurrentOption->m_func( this );
-                  if( ret < 0 )
-                     return ret;
-                  if( ret > 0 )
-                     error = true;
+                  _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                }
                break;
             } // End case OPTION::REQUIRED_ARG
@@ -392,11 +352,7 @@ int PARSER::_parse( int offset )
                   }
                   else
                   {
-                     ret = onErrorShortOptionalArg();
-                     if( ret < 0 )
-                        return ret;
-                     if( ret > 0 )
-                        error = true;
+                     _RETURN_HANDLING( onErrorShortOptionalArg() )
                      break;
                   }
                }
@@ -416,11 +372,7 @@ int PARSER::_parse( int offset )
                         }
                         else
                         {
-                           ret = onErrorShortOptionalArg();
-                           if( ret < 0 )
-                              return ret;
-                           if( ret > 0 )
-                              error = true;
+                           _RETURN_HANDLING( onErrorShortOptionalArg() )
                            break;
                         }
                      }
@@ -428,12 +380,8 @@ int PARSER::_parse( int offset )
                }
                else
                   m_optArg.clear(); // No argument
- 
-               ret = m_pCurrentOption->m_func( this );
-               if( ret < 0 )
-                  return ret;
-               if( ret > 0 )
-                  error = true;
+               
+               _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )   
 
                if( m_optArg.empty() )
                   break;
@@ -455,15 +403,15 @@ int PARSER::_parse( int offset )
 */
 void PARSER::list( ostream& out )
 {
-   for( auto lIt = begin(); lIt != end(); lIt++ )
+   for( auto& lIt : *this )
    {
       out << '\n';
-      (*lIt)->print( out );
+      lIt->print( out );
       out << "\n\t";
-      for( auto cIt = (*lIt)->m_helpText.begin(); cIt != (*lIt)->m_helpText.end(); cIt++ )
+      for( auto& cIt : lIt->m_helpText )
       {
-         out << *cIt;
-         if( (*cIt) == '\n' )
+         out << cIt;
+         if( cIt == '\n' )
             out << '\t'; // Inserting a tabulator after each linefeed.
       }
       out << '\n';
