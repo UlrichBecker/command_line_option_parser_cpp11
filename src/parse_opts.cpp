@@ -211,20 +211,12 @@ int PARSER::_parse( int offset )
             {
                if( (m_index+1) == m_argc )
                {
-                  ret = onErrorLongMissingRequiredArg();
-                  if( ret < 0 )
-                     return ret;
-                  if( ret > 0 )
-                     error = true;
+                  _RETURN_HANDLING( onErrorLongMissingRequiredArg() )
                   break;
                }
                m_index++;
                m_optArg = m_ppArgv[m_index];
-               ret = m_pCurrentOption->m_func( this );
-               if( ret < 0 )
-                  return ret;
-               if( ret > 0 )
-                  error = true;
+               _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                break;
             } // End case OPTION::REQUIRED_ARG
             case OPTION::OPTIONAL_ARG:
