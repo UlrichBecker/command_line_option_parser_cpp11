@@ -20,6 +20,8 @@ recognized option in the shape of:
 - Specialized callback objects per single option and/or initializer-lists with callback lambda- functions and/or
   function-pointers are possible. (This is a matter of taste.)
 - Scalable, if a serten kind of option-type won't used for your project just define the corresponding compiler-switch (CONFIG_CLOP_NO_...) in your Makefile respectively build-system to reduce memory.
+
+
 If you intend to write a pure C-project or you are not allowed to write your program in C++ (not to mention in C++11), so you can take a look in the following link:
 
 https://github.com/UlrichBecker/command_line_option_parser
