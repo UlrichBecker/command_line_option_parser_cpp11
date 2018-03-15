@@ -36,6 +36,12 @@
 #include <parse_opts.hpp>
 #include <algorithm>
 
+#if defined( CONFIG_CLOP_NO_NO_ARG )          \
+    && defined( CONFIG_CLOP_NO_REQUIRED_ARG ) \
+    && defined( CONFIG_CLOP_NO_OPTIONAL_ARG )
+ #error Not allowed to define all three macros!
+#endif
+
 //! @see parse_opts.hpp
 namespace CLOP
 {
@@ -51,9 +57,15 @@ void OPTION::print( ostream& out )
 
    switch( m_hasArg )
    {
+   #ifndef CONFIG_CLOP_NO_NO_ARG
       case NO_ARG:       sParam = "";          break;
+   #endif
+   #ifndef CONFIG_CLOP_NO_REQUIRED_ARG
       case REQUIRED_ARG: sParam = " <PARAM>";  break;
+   #endif
+   #ifndef CONFIG_CLOP_NO_OPTIONAL_ARG
       case OPTIONAL_ARG: sParam = " [=PARAM]"; break;
+   #endif
       default: assert( false ); break;
    }
 
@@ -201,12 +213,15 @@ int PARSER::_parse( int offset )
 
          switch( m_pCurrentOption->m_hasArg )
          {
+         #ifndef CONFIG_CLOP_NO_NO_ARG
             case OPTION::NO_ARG:
             {
                m_optArg.clear();
                _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                break;
             }
+         #endif // ifndef CONFIG_CLOP_NO_NO_ARG
+         #ifndef CONFIG_CLOP_NO_REQUIRED_ARG
             case OPTION::REQUIRED_ARG:
             {
                if( (m_index+1) == m_argc )
@@ -219,6 +234,8 @@ int PARSER::_parse( int offset )
                _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                break;
             } // End case OPTION::REQUIRED_ARG
+         #endif // ifndef CONFIG_CLOP_NO_REQUIRED_ARG
+         #ifndef CONFIG_CLOP_NO_OPTIONAL_ARG
             case OPTION::OPTIONAL_ARG:
             {
                if( pCurrent[tl] == '\0' )
@@ -267,6 +284,7 @@ int PARSER::_parse( int offset )
                _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                break;
             } // End of case OPTIONAL_ARG:
+         #endif // ifndef CONFIG_CLOP_NO_OPTIONAL_ARG
             default: assert( false ); break;
          } // End switch( m_pCurrentOption->m_hasArg )
          continue; // Of for( m_index = offset; m_index < m_argc; m_index++ )
@@ -301,12 +319,15 @@ int PARSER::_parse( int offset )
 
          switch( m_pCurrentOption->m_hasArg )
          {
+         #ifndef CONFIG_CLOP_NO_NO_ARG
             case OPTION::NO_ARG:
             {
                m_optArg.clear();
                _RETURN_HANDLING( m_pCurrentOption->m_func( this ) )
                break;
             }
+         #endif // ifndef CONFIG_CLOP_NO_NO_ARG
+         #ifndef CONFIG_CLOP_NO_REQUIRED_ARG
             case OPTION::REQUIRED_ARG:
             {
                if( (pCurrent[1] == '\0') && ((m_index+1) == m_argc) )
@@ -330,6 +351,8 @@ int PARSER::_parse( int offset )
                }
                break;
             } // End case OPTION::REQUIRED_ARG
+         #endif // ifndef CONFIG_CLOP_NO_REQUIRED_ARG
+         #ifndef CONFIG_CLOP_NO_OPTIONAL_ARG
             case OPTION::OPTIONAL_ARG:
             {
                if( pCurrent[1] == '=' )
@@ -382,6 +405,7 @@ int PARSER::_parse( int offset )
                   pCurrent++;
                break;
             } // End of case OPTIONAL_ARG:
+         #endif // ifndef CONFIG_CLOP_NO_OPTIONAL_ARG
             default: assert( false ); break;
          } // End switch( m_pCurrentOption->m_hasArg )
          pCurrent++;
@@ -471,7 +495,7 @@ int PARSER::onErrorUnrecognizedShortOption( char unrecognized )
  * @ingroup OPT_ERROR
  * @see parse_opts.hpp
  */
-int PARSER::onErrorUnrecognizedLongOption( const string unrecognized )
+int PARSER::onErrorUnrecognizedLongOption( const string& unrecognized )
 {
    cerr << getProgramName()
         << ": unrecognized long option --"

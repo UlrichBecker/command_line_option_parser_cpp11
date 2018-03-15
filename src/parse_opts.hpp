@@ -72,17 +72,27 @@ public:
    //! @brief Definition of the option-type.
    enum ARG_REQUIRE_T
    {
+   #ifndef CONFIG_CLOP_NO_NO_ARG
       //! @brief Option has no argument.
-      NO_ARG       = 0,
-
+      NO_ARG       = 0
+   #endif
+   #if !defined( CONFIG_CLOP_NO_REQUIRED_ARG ) || !defined( CONFIG_CLOP_NO_OPTIONAL_ARG )
+      ,
+   #endif
+   #ifndef CONFIG_CLOP_NO_REQUIRED_ARG
       //! @brief Option needs a argument.
-      REQUIRED_ARG = 1,
-
+      REQUIRED_ARG = 1
+   #endif
+   #if !defined( CONFIG_CLOP_NO_NO_ARG ) || !defined( CONFIG_CLOP_NO_REQUIRED_ARG )
+      ,
+   #endif
+   #ifndef CONFIG_CLOP_NO_OPTIONAL_ARG
       //! @brief Option can have a argument but must not.
       //! @note  If a argument for this option type is given, \n
       //!        so the usage of the '=' character in the command line
       //!        becomes necessary.
       OPTIONAL_ARG = 2
+   #endif
    };
 
    //! @brief Mandatory pointer to the corresponding callback-function.\n
@@ -615,7 +625,7 @@ protected:
    //! @param unrecognized Unrecognized keyword-string form the command-line.
    //! @retval <0 Parser returns immediately by -1.
    //! @retval >=0 Parser continues its work and returns by -1.
-   virtual int onErrorUnrecognizedLongOption( const std::string unrecognized );
+   virtual int onErrorUnrecognizedLongOption( const std::string& unrecognized );
 
    //! @brief Becomes triggered if a error in a long optional argument after '='
    //!        occurs.
