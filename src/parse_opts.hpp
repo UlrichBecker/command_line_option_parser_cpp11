@@ -75,16 +75,16 @@ public:
    #ifndef CONFIG_CLOP_NO_NO_ARG
       //! @brief Option has no argument.
       NO_ARG       = 0
-   #endif
-   #if !defined( CONFIG_CLOP_NO_REQUIRED_ARG ) || !defined( CONFIG_CLOP_NO_OPTIONAL_ARG )
+    #if !defined( CONFIG_CLOP_NO_REQUIRED_ARG ) || !defined( CONFIG_CLOP_NO_OPTIONAL_ARG )
       ,
+    #endif
    #endif
    #ifndef CONFIG_CLOP_NO_REQUIRED_ARG
       //! @brief Option needs a argument.
       REQUIRED_ARG = 1
-   #endif
-   #if !defined( CONFIG_CLOP_NO_NO_ARG ) || !defined( CONFIG_CLOP_NO_REQUIRED_ARG )
+    #if !defined( CONFIG_CLOP_NO_OPTIONAL_ARG )
       ,
+    #endif
    #endif
    #ifndef CONFIG_CLOP_NO_OPTIONAL_ARG
       //! @brief Option can have a argument but must not.
