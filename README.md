@@ -26,6 +26,9 @@ If you intend to write a pure C-project or you are not allowed to write your pro
 
 https://github.com/UlrichBecker/command_line_option_parser
 
+A practical application using this module you can find in this repository:
+https://github.com/UlrichBecker/DocFsm
+
 Excuses my Eric Allman coding-style and my bad English ;-)
 
 Code-example
