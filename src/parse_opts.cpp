@@ -181,7 +181,7 @@ int PARSER::_parse( int offset )
                return ret;
          }
 
-         int tl = 0;
+         std::size_t tl = 0;
          while( (pCurrent[tl] != '\0') && (pCurrent[tl] != '=') )
             tl++;
 
