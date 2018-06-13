@@ -11,6 +11,17 @@
 /*! @date    17.12.2016                                                      */
 /*! @see     parse_opts.hpp                                                  */
 /*****************************************************************************/
+
+/*
+ * NOTE:
+ * If you have been made and installed the shared-library via the makefile in
+ * /src/makefile just compile this example by the following line:
+ *
+ * g++ -std=c++11 -o e1 -lParseOptsCpp11 cmd_opt_test.cpp
+ *
+ * otherwise invoke the makefile in this directory.
+ */
+
 #include <parse_opts.hpp>
 
 using namespace std;
