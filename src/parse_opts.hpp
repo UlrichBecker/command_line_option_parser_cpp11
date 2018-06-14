@@ -5,6 +5,7 @@
 /*---------------------------------------------------------------------------*/
 /*! @file    parse_opts.hpp                                                  */
 /*! @see     parse_opts.cpp                                                  */
+/*  Library: libParseOptsCpp11.so, resp: -lParseOptsCpp11                    */
 /*! @author  Ulrich Becker                                                   */
 /*! @date    17.12.2016                                                      */
 /*  Updates:                                                                 */
