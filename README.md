@@ -1,4 +1,4 @@
-#A commandline (option) parser for C++11 projects
+# A commandline (option) parser for C++11 projects
 
 An alternative to getopt() and getopt_long() (and boost::program_options) by using of callback functions for each
 recognized option in the shape of:
@@ -18,7 +18,7 @@ recognized option in the shape of:
 - Commands by mixed order of options and non-options are possible.
 - Specialized callback objects per single option and/or initializer-lists with callback lambda- functions and/or
   function-pointers are possible. (This is a matter of taste.)
-- Scalable, if a serten kind of option-type won't used for your project just define the corresponding compiler-switch (CONFIG_CLOP_NO_...) in your Makefile respectively build-system to reduce memory, provided you'll link the sourc-ecode directly to your project rather than the shared-library.
+- Scalable, if a serten kind of option-type won't used for your project just define the corresponding compiler-switch (CONFIG_CLOP_NO_...) in your Makefile respectively build-system to reduce memory, provided you'll link the source-code directly to your project rather than the shared-library.
 
 
 If you intend to write a pure C-project or you are not allowed to write your program in C++ (not to mention in C++11), so you can take a look in the following link:
