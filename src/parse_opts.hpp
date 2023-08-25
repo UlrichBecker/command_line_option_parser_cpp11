@@ -51,6 +51,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <functional>
 
 //! @brief Name-space of the Command-Line-Option-Parser.
 namespace CLOP
@@ -73,8 +74,8 @@ public:
    //! @retval >0  Function was not successful. \n
    //!             In this case the parser continues its work but
    //!             the return value of the parser will be -1.
-   typedef int (*FUNC_T)( PARSER* );
-
+   using FUNC_T = std::function<int(PARSER*)>;
+   
    //! @brief Definition of the option-type.
    enum ARG_REQUIRE_T
    {
